@@ -323,15 +323,14 @@ For brown-field projects (existing code) we recommend a staged rollout:
 3. Triage remaining warnings, prioritising high-risk ones (conversions that influences array indexing, object size calculations, or security-sensitive logic) and refactor them or make the casts explicit.
 4. Gradually tighten the flag: warning → error → part of CI.
 
-##### Replacing implicit casts with explicit ones
+##### Removing implicit casts
 
-Explicit casts are a temporary workaround, not a long-term solution. Each cast should eventually be:
+Where practical, implicit casts that cause data loss should be refactored so that they are unnecessary. For example, they can be:
 
-- Eliminated by harmonizing the types, or
-- Justified with a comment, or
+- Eliminated by harmonizing the types
 - Rewritten to reflect the programmer’s intent clearly (e.g., clamping values instead of truncating bits).
 
-Replacing implicit conversions with explicit C-style casts can introduce new bugs. For example, if an implicit cast from a 32-bit value to a 16-bit short is mistakenly replaced with a cast to an 8-bit char, this truncates more bits and misrepresents intent.
+If such a cast is necessary, convert it from an implicit cast to an explicit cast. Each such cast should be justified with a comment. A problem with replacing implicit conversions with explicit C-style casts is that they can introduce new bugs when used incorrectly. For example, if an implicit cast from a 32-bit value to a 16-bit short is mistakenly replaced with a cast to an 8-bit char, this truncates more bits and misrepresents intent.
 
 ##### Warning noise from third-party headers
 
