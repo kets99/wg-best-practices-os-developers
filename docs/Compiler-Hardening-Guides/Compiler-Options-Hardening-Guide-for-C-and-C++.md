@@ -310,6 +310,9 @@ If the resulting values are used in a context where they control memory accesses
 
 For C++ warnings about conversions between signed and unsigned integers are disabled by default unless `-Wsign-conversion` is explicitly enabled.
 
+
+This warning only applies where a data conversion may lead to data loss. C and C++ conditionals (such as after an "if" statement) accept types other than booleans, for example, integers (where non-zero is interpreted as true) and pointers (where non-NULL is interpreted as true). This interpretation of truthiness could be considered a data type conversion (in a sense), but this option does not create spurious warnings about these perfectly reasonable constructs.
+
 #### Additional Considerations
 
 On large, brown-field code bases the `-Wconversion` option can generate hundreds or thousands of warnings, many of which are benign or stem from idiomatic C patterns. The GCC wiki notes that `-Wconversion` *"is designed for a niche of uses […] where the programmer is willing to accept and workaround invalid warnings."*[^Taylor2012] Because of the volume of diagnostics, developers may start ignoring all warnings, defeating the purpose of the flag. For such projects it can be more pragmatic to start with the narrower `-Wsign-conversion` or to enable `-Wconversion` only for selected translation units.
